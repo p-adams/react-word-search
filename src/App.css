@@ -7,11 +7,15 @@
 
 .word-grid {
   display: grid;
-  grid-template-columns: repeat(4, 50px);
+  grid-template-columns: repeat(8, 50px);
 }
 .cell {
   outline: 1px solid lightgray;
   font-size: xx-large;
+}
+
+.cell.tracking {
+  outline: 1px solid blue;
 }
 
 @keyframes logo-spin {
