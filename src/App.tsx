@@ -12,9 +12,8 @@ function App() {
     ["K", "O", "I", "G", "U", "F", "U", "N"],
     ["W", "A", "T", "E", "R", "O", "Q", "E"],
   ];
-
-  // const [startPos, setStartPos] = useState({ row: -1, col: -1 });
-  // const [stopPos, setStopPos] = useState({ row: -1, col: -1 });
+  const [startPos, setStartPos] = useState({ row: -1, col: -1 });
+  const [stopPos, setStopPos] = useState({ row: -1, col: -1 });
   const [tracking, setTracking] = useState(false);
 
   const [selection, setSelection] = useState("");
@@ -42,7 +41,7 @@ function App() {
   const handleMouseOver = (row: number, col: number) => {
     if (tracking) {
       setSelection(($v) => $v.concat(grid[row][col]));
-      // setStopPos({ row, col });
+      setStopPos({ row, col });
       // Here, you can perform actions on cells between start and stop positions
     }
   };
@@ -51,8 +50,8 @@ function App() {
     setTracking(true);
 
     setSelection(grid[row][col]);
-    // setStartPos({ row, col });
-    // setStopPos({ row: -1, col: -1 });
+    setStartPos({ row, col });
+    setStopPos({ row: -1, col: -1 });
   }
   function confirmSelection() {
     setSelection("");
@@ -60,7 +59,7 @@ function App() {
   }
   return (
     <>
-      {JSON.stringify(selection)}
+      {JSON.stringify(startPos)} - {JSON.stringify(stopPos)}
       <h1>React Word Search</h1>
       <p className="read-the-docs">Find words horizontally and vertically</p>
       <div className="card">
