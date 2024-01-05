@@ -52,7 +52,7 @@ function App() {
             row.map((cell, colIndex) => (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className={`cell ${tracking ? "tracking" : ""}`}
+                className="cell"
                 onMouseUp={() => confirmSelection()}
                 onMouseDown={() => registerCellClick(rowIndex, colIndex)}
                 onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
