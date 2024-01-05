@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -12,38 +12,55 @@ function App() {
     ["K", "O", "I", "G", "U", "F", "U", "N"],
     ["W", "A", "T", "E", "R", "O", "Q", "E"],
   ];
-  const words = [
-    "BEACH",
-    "SUMMER",
-    "CAMP",
-    "SUN",
-    "FUN",
-    "SWIM",
-    "HOT",
-    "WATER",
-  ];
+
+  // const [startPos, setStartPos] = useState({ row: -1, col: -1 });
+  // const [stopPos, setStopPos] = useState({ row: -1, col: -1 });
   const [tracking, setTracking] = useState(false);
-  const [startPos, setStartPos] = useState({ row: -1, col: -1 });
-  const [stopPos, setStopPos] = useState({ row: -1, col: -1 });
+
+  const [selection, setSelection] = useState("");
+
+  const [words, setWords] = useState(
+    ["BEACH", "SUMMER", "CAMP", "SUN", "FUN", "SWIM", "HOT", "WATER"].map(
+      (word) => ({ label: word, selected: false })
+    )
+  );
+
+  useEffect(() => {
+    if (selection === "") {
+      return;
+    }
+    const selectedWord = words.find((word) => word.label === selection);
+    if (selectedWord) {
+      setWords((words) =>
+        words.map((w) =>
+          w.label === selectedWord.label ? { ...w, selected: true } : w
+        )
+      );
+    }
+  }, [selection]);
 
   const handleMouseOver = (row: number, col: number) => {
     if (tracking) {
-      setStopPos({ row, col });
+      setSelection(($v) => $v.concat(grid[row][col]));
+      // setStopPos({ row, col });
       // Here, you can perform actions on cells between start and stop positions
     }
   };
 
   function registerCellClick(row: number, col: number) {
     setTracking(true);
-    setStartPos({ row, col });
-    setStopPos({ row: -1, col: -1 });
+
+    setSelection(grid[row][col]);
+    // setStartPos({ row, col });
+    // setStopPos({ row: -1, col: -1 });
   }
   function confirmSelection() {
-    // TODO: handle confirmation
-    console.log(startPos, stopPos);
+    setSelection("");
+    setTracking(false);
   }
   return (
     <>
+      {JSON.stringify(selection)}
       <h1>React Word Search</h1>
       <p className="read-the-docs">Find words horizontally and vertically</p>
       <div className="card">
@@ -66,7 +83,9 @@ function App() {
           Guess words
           <ul>
             {words.map((w, i) => (
-              <li key={i}>{w}</li>
+              <li key={i} className={`word ${w.selected ? "selected" : ""}`}>
+                {w.label}
+              </li>
             ))}
           </ul>
         </div>

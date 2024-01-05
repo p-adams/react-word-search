@@ -18,6 +18,10 @@
   outline: 1px solid blue;
 }
 
+.selected {
+  text-decoration: line-through;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
