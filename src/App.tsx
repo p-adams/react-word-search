@@ -15,8 +15,10 @@ function App() {
   const [startPos, setStartPos] = useState({ row: -1, col: -1 });
   const [stopPos, setStopPos] = useState({ row: -1, col: -1 });
   const [tracking, setTracking] = useState(false);
-
   const [selection, setSelection] = useState("");
+  const [cellsInRange, setCellsInRange] = useState<
+    { row: number; col: number }[]
+  >([]);
 
   const [words, setWords] = useState(
     ["BEACH", "SUMMER", "CAMP", "SUN", "FUN", "SWIM", "HOT", "WATER"].map(
@@ -42,16 +44,28 @@ function App() {
     if (tracking) {
       setSelection(($v) => $v.concat(grid[row][col]));
       setStopPos({ row, col });
+      // Logic to determine cells between startPos and stopPos
+      const cellsInRange = [];
+      const minRow = Math.min(startPos.row, row);
+      const maxRow = Math.max(startPos.row, row);
+      const minCol = Math.min(startPos.col, col);
+      const maxCol = Math.max(startPos.col, col);
+
+      for (let r = minRow; r <= maxRow; r++) {
+        for (let c = minCol; c <= maxCol; c++) {
+          cellsInRange.push({ row: r, col: c });
+        }
+      }
+      setCellsInRange(cellsInRange);
+
       // Here, you can perform actions on cells between start and stop positions
     }
   };
 
   function registerCellClick(row: number, col: number) {
     setTracking(true);
-
     setSelection(grid[row][col]);
     setStartPos({ row, col });
-    setStopPos({ row: -1, col: -1 });
   }
   function confirmSelection() {
     setSelection("");
@@ -68,7 +82,15 @@ function App() {
             row.map((cell, colIndex) => (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className="cell"
+                className={`cell ${
+                  cellsInRange.some(
+                    (selectedCell) =>
+                      selectedCell.row === rowIndex &&
+                      selectedCell.col === colIndex
+                  )
+                    ? "match"
+                    : ""
+                }`}
                 onMouseUp={() => confirmSelection()}
                 onMouseDown={() => registerCellClick(rowIndex, colIndex)}
                 onMouseOver={() => handleMouseOver(rowIndex, colIndex)}

@@ -8,6 +8,7 @@
 .word-grid {
   display: grid;
   grid-template-columns: repeat(8, 50px);
+  user-select: none;
 }
 .cell {
   outline: 1px solid lightgray;
@@ -15,11 +16,13 @@
 }
 
 .cell.match {
-  outline: 1px solid blue;
+  background-color: gray;
+  color: white;
 }
 
 .selected {
   text-decoration: line-through;
+  font-weight: bolder;
 }
 
 @keyframes logo-spin {
