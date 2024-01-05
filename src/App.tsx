@@ -14,7 +14,6 @@ function App() {
   ];
   const [startPos, setStartPos] = useState({ row: -1, col: -1 });
   const [stopPos, setStopPos] = useState({ row: -1, col: -1 });
-  const [tracking, setTracking] = useState(false);
   const [selection, setSelection] = useState("");
   const [cellsInRange, setCellsInRange] = useState<
     { row: number; col: number }[]
@@ -41,7 +40,6 @@ function App() {
   }, [selection]);
 
   const handleMouseOver = (row: number, col: number) => {
-    if (tracking) {
       setSelection(($v) => $v.concat(grid[row][col]));
       setStopPos({ row, col });
       // Logic to determine cells between startPos and stopPos
@@ -56,20 +54,15 @@ function App() {
           cellsInRange.push({ row: r, col: c });
         }
       }
-      setCellsInRange(cellsInRange);
-
-      // Here, you can perform actions on cells between start and stop positions
-    }
+      setCellsInRange(cellsInRange); 
   };
 
   function registerCellClick(row: number, col: number) {
-    setTracking(true);
     setSelection(grid[row][col]);
     setStartPos({ row, col });
   }
   function confirmSelection() {
     setSelection("");
-    setTracking(false);
   }
   return (
     <>
